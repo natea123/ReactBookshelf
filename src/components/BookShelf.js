@@ -23,10 +23,20 @@ const BookShelf = ({ colCount, md }) => {
         }
       ]
 
-  const [books, addBook] = useState([])
+  const [books, addBook] = useState(booksTest);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("")
+
+  const submitValue = (event) => {
+    //event.preventDefault();
+    handleClose();
+    addBook({id: books.length, title: title, author: author});
+    buildGrid();
+  }
+
 
 
     //The UI for the items to be shown inside the grid
@@ -95,7 +105,7 @@ const BookShelf = ({ colCount, md }) => {
         <>
         <Button variant="light" onClick={ handleShow }>+ Add New Book</Button>
 
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={ handleClose }>
 
             <Modal.Header closeButton>
                 <Modal.Title>Add book</Modal.Title>
@@ -109,6 +119,8 @@ const BookShelf = ({ colCount, md }) => {
                 type="text"
                 placeholder="War and Peace"
                 autoFocus
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Group>
             <Form.Group
@@ -116,14 +128,19 @@ const BookShelf = ({ colCount, md }) => {
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label>Author</Form.Label>
-              <Form.Control type="text" placeholder="Leo Tolstoy" />
+              <Form.Control 
+                type="text" 
+                placeholder="Leo Tolstoy"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
             </Form.Group>
           </Form>
             </Modal.Body>
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>   
-                <Button variant="primary" type="submit" onClick={() => addBook({ id: books.id + 1, title: books.title, author: books.author })}>Add book</Button>
+                <Button variant="primary" type="submit" onClick={ submitValue }>Add book</Button>
             </Modal.Footer>
 
         </Modal>
