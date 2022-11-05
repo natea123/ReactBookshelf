@@ -12,12 +12,10 @@ const BookShelf = ({ colCount, md }) => {
 
   const booksTest = [
         {
-          id: 0,
           title: 'The Horde: How the Mongols changed the world',
           author: 'Marie Favereau'
         },
         {
-          id: 1,
           title: 'The Horde: How the Mongols changed the world',
           author: 'Marie'
         }
@@ -31,26 +29,20 @@ const BookShelf = ({ colCount, md }) => {
   const [author, setAuthor] = useState("")
 
   const submitValue = (event) => {
-    //event.preventDefault();
+    event.preventDefault();
     handleClose();
-    addBook({id: books.length, title: title, author: author});
+    addBook((books) => [
+      ...books,
+      {
+        title: title,
+        author: author
+      },
+    ]);
+    setTitle('');
+    setAuthor('');
     buildGrid();
-  }
+  };
 
-
-
-    //The UI for the items to be shown inside the grid
-  const Item = props => {
-    //destrcture the props
-    const { title, author } = props
-
-    return (
-      <div className='book'>
-        <h3>{title}</h3>
-        <p>Author: {author}</p>
-      </div>
-    )
-  }
     
     let rowCount = Math.floor(books.length / colCount) + 1
 
@@ -91,7 +83,10 @@ const BookShelf = ({ colCount, md }) => {
                 let item = books[index];
                 cols.push(
                     <Col className='Col' md={md}>
-                        <Item key={item.id} id={item.id} title={item.title} author={item.author} />
+                      <div className="book" key={item.title}>
+                        <h3>{item.title}</h3>
+                        <p>Author: {item.author}</p>
+                      </div>
                     </Col>
                 )
                 index++
@@ -120,7 +115,7 @@ const BookShelf = ({ colCount, md }) => {
                 placeholder="War and Peace"
                 autoFocus
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={ (e) => setTitle(e.target.value) }
               />
             </Form.Group>
             <Form.Group
@@ -132,21 +127,21 @@ const BookShelf = ({ colCount, md }) => {
                 type="text" 
                 placeholder="Leo Tolstoy"
                 value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                onChange={ (e) => setAuthor(e.target.value) }
               />
             </Form.Group>
           </Form>
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>   
+                <Button variant="secondary" onClick={ handleClose }>Close</Button>   
                 <Button variant="primary" type="submit" onClick={ submitValue }>Add book</Button>
             </Modal.Footer>
 
         </Modal>
 
         <Container className='Container'>
-            { buildGrid() }
+          { buildGrid() }
         </Container>
         </>
     );
