@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Row,
     Col,
@@ -10,18 +10,11 @@ import {
 
 const BookShelf = ({ colCount, md }) => {
 
-  const booksTest = [
-        {
-          title: 'The Horde: How the Mongols changed the world',
-          author: 'Marie Favereau'
-        },
-        {
-          title: 'The Horde: How the Mongols changed the world',
-          author: 'Marie'
-        }
-      ]
-
-  const [books, addBook] = useState(booksTest);
+  const [books, addBook] = useState(() => {
+    const savedBooks = localStorage.getItem("books");
+    const initBooks = JSON.parse(savedBooks);
+    return initBooks || [];
+  });
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -43,10 +36,15 @@ const BookShelf = ({ colCount, md }) => {
     buildGrid();
   };
 
+  useEffect(() => {
+    localStorage.setItem('books', JSON.stringify(books));
+  }, [books]);
+
     
     let rowCount = Math.floor(books.length / colCount) + 1
 
     //Index is needed to keep track of the current element that we are one.
+    
     let index = 0
 
     //This is the driver function for building the grid system.
