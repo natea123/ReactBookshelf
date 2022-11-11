@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <BookShelf colCount={2} md={6} />
+      <BookShelf />
     </div>
   );
 }
