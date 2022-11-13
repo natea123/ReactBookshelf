@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
+    Row,
     Col,
     Button,
     Modal,
-    Form
+    Form,
+    Card
 } from 'react-bootstrap'
 
 const BookShelf = () => {
@@ -19,8 +21,6 @@ const BookShelf = () => {
     try {
       const response = await fetch('/api/books')
       const jsonData = await response.json()
-      console.log(jsonData);
-      console.log("THIS WORKED");
 
       addBook(jsonData);
     } catch (err) {
@@ -44,11 +44,13 @@ const BookShelf = () => {
         },
         body: JSON.stringify(body),
       });
+      setTitle('');
+      setAuthor('');
     } catch (err) {
       console.error(err.message)
     }
-    setTitle('');
-    setAuthor('');
+    //setTitle('');
+    //setAuthor('');
   }
 
     return (
@@ -95,16 +97,23 @@ const BookShelf = () => {
 
         </Modal>
 
+        <Row xs="auto">
         {books.map(book => (
-          <Col className='Col'>
-            <div className="book" key={book.title}>
-              <h3>{book.title}</h3>
-              <p>Author: {book.author}</p>
-            </div>
-          </Col>
+          <Col>
+            <Card style={{ width: '18rem' }}>
+            <Card.Img variant="top" src="./book.jpg" />
+            <Card.Body>
+              <Card.Title>{ book.title }</Card.Title>
+              <Card.Text>
+                Author: { book.author }
+              </Card.Text>
+              <Button variant="primary">View Book</Button>
+            </Card.Body>
+          </Card>
+        </Col>
         ))}
-
-        </>
+        </Row>
+      </>
     );
 };
 
