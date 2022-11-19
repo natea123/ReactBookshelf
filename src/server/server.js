@@ -40,9 +40,13 @@ app.post('/api/search', (req, res) => {
     var author = isbnLookup.authors[0];
     books.push({title: title, author: author});
     console.log(books);
+
+    res.status(200).send("Updated Successfully");
+
   })
   .catch(function (error) {
     console.log(error);
+    res.status(500).send("ISBN lookup failed - please verify correct entry");
   });
 
 });
