@@ -16,6 +16,7 @@ const BookShelf = () => {
   const handleClose = () => setShow(false);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("")
+  const [isbn, setIsbn] = useState(0)
 
   const getBooks = async () => {
     try {
@@ -36,16 +37,32 @@ const BookShelf = () => {
     e.preventDefault();
     handleClose();
     try {
-      const body = { author: author, title: title };
-      const response = await fetch('/api/books', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      setTitle('');
-      setAuthor('');
+      if (isbn != 0) {
+
+        const body = { isbn: isbn };
+        const response = await fetch('/api/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        });
+        setIsbn(0);
+
+      } else {
+
+        const body = { author: author, title: title };
+        const response = await fetch('/api/books', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        });
+        setTitle('');
+        setAuthor('');
+      }
+      
     } catch (err) {
       console.error(err.message)
     }
@@ -86,6 +103,21 @@ const BookShelf = () => {
                 value={author}
                 onChange={ (e) => setAuthor(e.target.value) }
               />
+            
+            </Form.Group>
+
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>Optional: Add via ISBN</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Leo Tolstoy"
+                value={isbn}
+                onChange={ (e) => setIsbn(e.target.value) }
+              />
+            
             </Form.Group>
           </Form>
             </Modal.Body>
