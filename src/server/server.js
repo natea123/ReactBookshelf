@@ -36,9 +36,11 @@ app.post('/api/search', (req, res) => {
   axios(config)
   .then(function (response) {
     var isbnLookup = JSON.parse(JSON.stringify(response.data.items[0].volumeInfo));
+    //console.log(isbnLookup);
     var title = isbnLookup.title;
+    var img = isbnLookup.imageLinks.thumbnail;
     var author = isbnLookup.authors[0];
-    books.push({title: title, author: author});
+    books.push({title: title, author: author, img: img});
     console.log(books);
 
     res.status(200).send("Updated Successfully");
