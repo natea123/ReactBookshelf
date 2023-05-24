@@ -15,8 +15,8 @@ const BookShelf = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("")
-  const [isbn, setIsbn] = useState(0)
+  const [author, setAuthor] = useState("");
+  const [isbn, setIsbn] = useState(0);
 
   const getBooks = async () => {
     try {
@@ -37,7 +37,7 @@ const BookShelf = () => {
     e.preventDefault();
     handleClose();
     try {
-      if (isbn != 0) {
+      if (isbn !== 0) {
 
         const body = { isbn: isbn };
         const response = await fetch('/api/search', {
@@ -51,7 +51,7 @@ const BookShelf = () => {
 
       } else {
 
-        const body = { author: author, title: title };
+        const body = { author: author, title: title};
         const response = await fetch('/api/books', {
           method: 'POST',
           headers: {
@@ -72,6 +72,7 @@ const BookShelf = () => {
 
     return (
         <>
+  
         <Button variant="light" onClick={ handleShow }>+ Add New Book</Button>
 
         <Modal show={show} onHide={ handleClose }>
@@ -113,7 +114,7 @@ const BookShelf = () => {
               <Form.Label>Optional: Add via ISBN</Form.Label>
               <Form.Control 
                 type="text" 
-                placeholder="Leo Tolstoy"
+                placeholder="9780393966473"
                 value={isbn}
                 onChange={ (e) => setIsbn(e.target.value) }
               />
@@ -133,7 +134,7 @@ const BookShelf = () => {
         {books.map(book => (
           <Col>
             <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="./book.jpg" />
+            <Card.Img variant="top" src={book.img} />
             <Card.Body>
               <Card.Title>{ book.title }</Card.Title>
               <Card.Text>
